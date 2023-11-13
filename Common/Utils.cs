@@ -46,6 +46,10 @@ namespace Common
             {
                 logger.LogCritical("{ex.Message}", ex.Message);
             }
+            catch (Exception ex)
+            {
+                logger.LogError("{ex.Message}", ex.Message);
+            }
 
             return results;
         }
@@ -80,11 +84,7 @@ namespace Common
                     }
                 }
             }
-            catch (FileNotFoundException ex)
-            {
-                logger.LogCritical("{ex.Message}", ex.Message);
-            }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 logger.LogCritical("{ex.Message}", ex.Message);
             }
@@ -158,7 +158,7 @@ namespace Common
 
         public static List<RaceResult> RemoveDiscrepancies(ILogger logger, List<RaceResult> results)
         {
-            // Identify IDs with multiple names
+            // Identify IDs with multiple Names
             HashSet<int> idsWithMultipleNames = results
                 .GroupBy(result => result.Id)
                 .Where(group => group.Select(result => result.Name).Distinct().Count() > 1)
@@ -193,7 +193,7 @@ namespace Common
 
             if (multipleParticipations.Any())
             {
-                logger.LogWarning("{message}", "Some people have participated in more than once in a race. The entries will be removed: " +
+                logger.LogWarning("{message}", "Some people have participated more than once in a race. The entries will be removed: " +
                     string.Join(", ", multipleParticipations));
             }
 
